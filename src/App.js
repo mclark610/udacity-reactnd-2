@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import MovieFavoriteList from "./movieFavoriteList";
+import MovieFavoritesList from './movie_favorites_list';
 
 /*
 Display a list of movies where each movie contains a list of users that favorited it.
@@ -101,13 +101,13 @@ const movies = {
 
 /* initMovieFavorites:
 *	Creates a json array of movies with a list of users that rated the selected
-*   movies as favorites.  
+*   movies as favorites.
 */
 
-const initMovieFavorites = () => {
+const initMovieFavorites = (movies,profiles,users) => {
     let movieFavorites = [];
     for (let pos in movies) {
-   
+
         let movieFavorite = {
             "movieID": movies[pos].id,
             "movieName" : movies[pos].name,
@@ -117,16 +117,16 @@ const initMovieFavorites = () => {
     }
 
     // add users to movie favorites array
-    movieFavorites = addUsersToMovieFavorites(movieFavorites);
+    movieFavorites = addUsersToMovieFavorites(movieFavorites,movies,profiles,users);
 
-    return movieFavorites;    
+    return movieFavorites;
 }
 
 /* addUsersToMovieFavorites:
  * Updates the json array to add the users to each movie that the user favored.
  * If the movie does not have any users, the user array remains empty.
  */
-const addUsersToMovieFavorites = (movieFavorites) => {
+const addUsersToMovieFavorites = (movieFavorites,movies,profiles,users) => {
     // Cycle through profiles to add users
 
     profiles.forEach( profile => {
@@ -136,7 +136,7 @@ const addUsersToMovieFavorites = (movieFavorites) => {
             console.log("favoriteMovieID index not found");
         }
         else {
-            movieFavorites[idx].users.push(users[profile.userID].name);
+            movieFavorites[idx].users.push( users[profile.userID].name );
         }
     })
 
@@ -144,68 +144,18 @@ const addUsersToMovieFavorites = (movieFavorites) => {
     return movieFavorites;
 }
 
-class MovieUsers extends Component {
-  constructor(props) {
-    super(props);
-    
-    this.movieTitle = this.props.movieTitle;
-    this.users = this.props.movieUsers;
-    console.log("movietitle: " + this.movieTitle);
-  }
-  
-  render() {
-      // User heading is List header or Liked by
-      let userHeading= this.users.length===0?(""):(<p>Liked By</p>);
-      return (
-        <div>
-      	    <h2> {this.movieTitle} </h2>
-            {userHeading}
-            {this.users.length === 0 ? (
-                <p>None of the current users liked this movie</p>
-            ) : (
-              <ul>
-              {this.users.map(user => {
-                 return(<li key={user}>{user}</li>);
-              })}
-              </ul>
-            )}
-        </div>
-       
-      );
-  }
-}
-
-class MovieFavoritesList extends Component {
-	constructor(props) {
-      	super(props);
-      
-        /* organize data to put into a format to make it easier to display. */
-        this.movieFavorites = initMovieFavorites();
-      
-    }
-  
-	render() {
-      return (
-        <div>      
-        {this.movieFavorites.map( movieFavorite => (
-          		<MovieUsers key={movieFavorite.movieName} movieTitle={movieFavorite.movieName} movieUsers={movieFavorite.users}/>
-            ))} 
-       </div>
-      );
-    }	  
-}
-
 class App extends Component {
   render() {
+      let movieFavorites = initMovieFavorites(movies,profiles,users);
     return (
-      
+
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">ReactND - Coding Practice</h1>
         </header>
         <h2>How Popular is Your Favorite Movie?</h2>
-		<MovieFavoritesList profileData={profiles} userData={users} movieData={movies}/>
+		<MovieFavoritesList profileData={profiles} userData={users} movieData={movies} movieFavorites={movieFavorites}/>
       </div>
     );
   }
