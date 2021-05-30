@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import MovieFavoriteList from "./movieFavoriteList";
+
 /*
 Display a list of movies where each movie contains a list of users that favorited it.
 
@@ -113,6 +115,10 @@ const initMovieFavorites = () => {
         }
         movieFavorites.push(movieFavorite);
     }
+
+    // add users to movie favorites array
+    movieFavorites = addUsersToMovieFavorites(movieFavorites);
+
     return movieFavorites;    
 }
 
@@ -133,6 +139,7 @@ const addUsersToMovieFavorites = (movieFavorites) => {
             movieFavorites[idx].users.push(users[profile.userID].name);
         }
     })
+
 
     return movieFavorites;
 }
@@ -174,26 +181,21 @@ class MovieFavoritesList extends Component {
       
         /* organize data to put into a format to make it easier to display. */
         this.movieFavorites = initMovieFavorites();
-        this.movieFavorites = addUsersToMovieFavorites(this.movieFavorites);
       
     }
   
 	render() {
       return (
         <div>      
-        {       
-            this.movieFavorites.map( movieFavorite => (
+        {this.movieFavorites.map( movieFavorite => (
           		<MovieUsers key={movieFavorite.movieName} movieTitle={movieFavorite.movieName} movieUsers={movieFavorite.users}/>
-            ))
-        } 
+            ))} 
        </div>
       );
-    }	
-  
+    }	  
 }
 
 class App extends Component {
-  
   render() {
     return (
       
@@ -203,7 +205,7 @@ class App extends Component {
           <h1 className="App-title">ReactND - Coding Practice</h1>
         </header>
         <h2>How Popular is Your Favorite Movie?</h2>
-		<MovieFavoritesList />
+		<MovieFavoritesList profileData={profiles} userData={users} movieData={movies}/>
       </div>
     );
   }
