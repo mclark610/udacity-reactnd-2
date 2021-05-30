@@ -144,7 +144,7 @@ const addUsersToMovieFavorites = (movieFavorites,movies,profiles,users) => {
 
     return movieFavorites;
 }
-
+ 
 class App extends Component {
   render() {
       let movieFavorites = initMovieFavorites(movies,profiles,users);
