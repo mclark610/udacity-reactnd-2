@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import MovieFavoritesList from './movie_favorites_list';
+import MovieFavoritesList from "./movie_favorites_list";
 
 /*
 Display a list of movies where each movie contains a list of users that favorited it.
@@ -99,6 +99,7 @@ const movies = {
   },
 };
 
+
 /* initMovieFavorites:
 *	Creates a json array of movies with a list of users that rated the selected
 *   movies as favorites.
@@ -155,10 +156,9 @@ class App extends Component {
           <h1 className="App-title">ReactND - Coding Practice</h1>
         </header>
         <h2>How Popular is Your Favorite Movie?</h2>
-		<MovieFavoritesList profileData={profiles} userData={users} movieData={movies} movieFavorites={movieFavorites}/>
+		<MovieFavoritesList movieFavorites={movieFavorites}/>
       </div>
     );
   }
 }
-
 export default App;
